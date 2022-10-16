@@ -1,0 +1,31 @@
+s
+
+0vorname
+1nachname
+2addresse 
+32
+455555 
+5karlsruhe
+6aa@s.de
+703333384
+
+vorname
+snachname
+aaddresse 2
+88888 
+karlsruhe
+a@s.de
+03448484
+---
+s
+
+nachname
+addresse 2
+55555 
+karlsruhe
+
+snachname
+aaddresse 2
+88888 
+karlsruhe
+---

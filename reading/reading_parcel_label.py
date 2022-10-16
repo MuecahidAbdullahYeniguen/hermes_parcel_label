@@ -23,7 +23,7 @@ elementsSenderData=list()
 elementsCommunicator=[elementsReceiverData,elementsSenderData]
 
 #Read input of user for parcel labe
-filepath = r'C:\Users\MJ\Desktop\user_input.txt'
+filepath = r'C:\Users\MJ\Desktop\python_automation\input.txt'
 fp = open(filepath,"r")
 
 lineContents = fp.readline().split(" ")

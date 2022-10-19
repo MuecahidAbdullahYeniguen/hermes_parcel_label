@@ -1,42 +1,106 @@
+import email
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+import re
 
 MAX_COUNT_FIELDS = 8
 
-#Fields of hermes, their ids and names
-userInputEntering = [list(),list()]
+# Fields of hermes, their ids and names
+userInputEntering = [list(), list()]
 userInputReading = list()
-userInput = [list(),list()]
+userInput = [list(), list()]
+
+filledFields = {
+    "firstname": "",
+    "lastname": "",
+    "street": "",
+    "houseNumber": "",
+    "zipCode": "",
+    "city": "",
+    "email": "",
+    "phone": ""
+}
+
+fields = ["firstname", "lastname", "street",
+          "houseNumber", "zipCode", "city", "email", "phone"]
+communicators = ["receiver", "sender"]
+packageSizes = ["HP", "S", "M", "L", "XL", "XXL"]
+receiverData = ["receiverAddressFirstname", "receiverAddressLastname", "receiverAddressStreet",
+                "receiverAddressHouseNumber", "receiverAddressZipCode", "receiverAddressCity", "receiverEmail", "receiverPhone"]
+senderData = ["senderAddressFirstname", "senderAddressLastname", "senderAddressStreet",
+              "senderAddressHouseNumber", "senderAddressZipCode", "senderAddressCity", "senderEmail", "senderPhone"]
+NOW_SENDER = "-"
+EOIPNUT = "#"
 
 
-fields = ["firstname","lastname","street","houseNumber","zipCode","city","email","phone"]
-communicators = ["receiver","sender"]
-packageSizes = ["HP","S","M","L","XL","XXL"]
-receiverData = ["receiverAddressFirstname","receiverAddressLastname","receiverAddressStreet","receiverAddressHouseNumber","receiverAddressZipCode","receiverAddressCity","receiverEmail","receiverPhone"]
-senderData = ["senderAddressFirstname","senderAddressLastname","senderAddressStreet","senderAddressHouseNumber","senderAddressZipCode","senderAddressCity","senderEmail","senderPhone"]
-EOF="-"
+elementsPackageSize = list()
+elementsReceiverData = list()
+elementsSenderData = list()
+elementsCommunicator = [elementsReceiverData, elementsSenderData]
 
-elementsPackageSize=list()
-elementsReceiverData=list()
-elementsSenderData=list()
-elementsCommunicator=[elementsReceiverData,elementsSenderData]
+# Read input of user for parcel labe
+filepath = r'C:\Users\MJ\Desktop\python_automation\user_input.txt'
+fp = open(filepath, "r")
+input = fp.readlines()
 
-#Read input of user for parcel labe
-filepath = r'C:\Users\MJ\Desktop\python_automation\input.txt'
-fp = open(filepath,"r")
+for i in range(0, len(input)):
+    input[i] = input[i].replace("\n", "").replace(" ", "")
+    print(input[i])
+print("----------------")
+parcelSize = input.pop(0)
+input.pop(0)
 
-lineContents = fp.readline().split(" ")
-while EOF not in lineContents[0]:
-    for i in range(0,len(lineContents)):
-        lineContents[i]= lineContents[i].strip().replace("\n","")
-        if lineContents[i]:
-            userInputReading.append(lineContents[i])
-    lineContents = fp.readline().split(" ")
 
-parcelSize = userInputReading.pop(0)
-userInputReading.pop(0)
-print(userInputReading)
+for i in range(0, len(input)):
+    match i:
+        case 0:
+            if len(input[i].split(" ")) == 2:
+                print("NAME1")
+            else:
+                print("NAME2")
+        case 1:
+            if "strasse" or "straße" in input[i]:
+                print("STRASSE")
+        case 2:
+            if re.match(r"^[0-9]{1,2}$", input[i]):
+                print("HOUSENUMBER")
+        case 3:
+            if re.match(r"\d{5}", input[i]):
+                print("ZIPCODE")
+        case 4:
+            if re.match(r"^[A-Za-z]+$", input[i]):
+                print("STADDDTT")
+        case 5:
+            if re.match(r"[A-Za-z]+\@[A-Za-z]+\.[A-Za-z]+", input[i]):
+                print("EMIALL")
+            elif re.match(r"\d{12}", input[i]):
+                print("TELEFON")
+        case 6:
+            if re.match(r"\d{12}", input[i]):
+                print("TELEFON")
+            elif re.match(r"[A-Za-z]+\@[A-Za-z]+\.[A-Za-z]+", input[i]):
+                print("EMIALL")
+
+    
+
+
+"""
+parcelSize = fp.readline()
+fp.readline()
+name = fp.readline().replace("\n", "").split(" ")
+if len(name) == 2:
+    filledFields["firstname"] = name[0]
+    filledFields["lastname"] = name[1]
+else:
+    filledFields["lastname"] = name[0]
+
+filledFields["street"] = "".join([val for val in fp.readline() if val.isalpha()])
+filledFields["houseNumber"] = "".join([val for val in fp.readline() if val.isnumeric()])
+filledFields["zipCode"] = "".join([val for val in fp.readline() if val.isnumeric()])
+filledFields["city"] = "".join([val for val in fp.readline() if val.isalpha()])
+filledFields["email"] = fp.readline().rstrip("\n")
+filledFields["phone"] = "".join([val for val in fp.readline() if val.isnumeric()])
 
 for j in range(0,len(userInputReading)):
     if j < int(len(userInputReading)/2):
@@ -86,10 +150,4 @@ downloadLink = btnDownload.get_attribute("href")
 browser.get(downloadLink)
 time.sleep(3)
 
-browser.close()
- 
-
- 
- 
- 
- 
+browser.close()"""

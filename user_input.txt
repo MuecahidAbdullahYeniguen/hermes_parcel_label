@@ -1,31 +1,26 @@
 s
 
-0vorname
-1nachname
-2addresse 
-32
-455555 
-5karlsruhe
-6aa@s.de
-703333384
-
-vorname
-snachname
-aaddresse 2
+vorname 
+strasse
+21
+11111 
+karlsruhe
+asss@sss.ss
+012345678911
+----
+nachname
+aaddresse 
+2
 88888 
 karlsruhe
 a@s.de
 03448484
----
-s
+###
 
-nachname
-addresse 2
-55555 
-karlsruhe
-
-snachname
-aaddresse 2
-88888 
-karlsruhe
----
+0 vorname snachname
+1 aaddresse 
+2 3
+3 88888 
+4 karlsruhe
+5 a@s.de
+6 3448484

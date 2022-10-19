@@ -11,6 +11,7 @@ userInputEntering = [list(), list()]
 userInputReading = list()
 userInput = [list(), list()]
 
+#C:\Users\MJ\AppData\Local\Programs\Python\Python310\python.exe
 
 communicators = ["receiver", "sender"]
 packageSizes = ["HP", "S", "M", "L", "XL", "XXL"]
@@ -25,6 +26,7 @@ fields = [receiverFields, senderFields]
 
 NOW_SENDER = "-"
 EOIPNUT = "#"
+EOF="."
 
 
 receiverInput = list()
@@ -39,23 +41,35 @@ elementsCommunicator = [elementsReceiverData, elementsSenderData]
 # Read input of user for parcel labe
 filepath = r'C:\Users\MJ\Desktop\python_automation\user_input.txt'
 fp = open(filepath, "r")
-fileContent = fp.readlines()
-for i in range(0, len(fileContent)):
-    fileContent[i] = fileContent[i].replace("\n", "")
-
+fileContent = [x.rstrip("\n") for x in fp.readlines()]
 parceSize = fileContent.pop(0).upper()
 fileContent.pop(0)
 i = 0
-for value in fileContent:
-    if NOW_SENDER in value:
-        i += 1
+for x in fileContent[:]:
+    """if NOW_SENDER in value:
+        i+=1
+        print(i)
         continue
     if EOIPNUT in value:
-        break
-    input[i].append(value.rstrip(" "))
+        break"""
+    fileContent.remove(x)
+    print(fileContent)
+print(fileContent)
 
 
-for i in range(0, len(input)):
+"""print(fileContent[value])
+if NOW_SENDER in fileContent[i]:
+    i += 1
+    continue
+if EOIPNUT in fileContent[i]:
+    break
+print(i)
+print(value)
+input[i].append(fileContent[value].rstrip(" "))
+fileContent.remove(fileContent[value])"""
+
+
+"""for i in range(0, len(input)):
     for j in range(0, len(input[i])):
         match j:
             case 0:
@@ -91,17 +105,10 @@ for i in range(0, len(input)):
 
 for com in data:
     for element in com.items():
-        print(element)
+        print(element)"""
 
-
-"""for i in range(0,len(userInputReading)):
-    if i < int(len(userInputReading)/2):
-        userInput[0].append(userInputReading[(i)])
-    else:
-        userInput[1].append(userInputReading[(i)])
-print(userInput)"""
 ###############################AUTOMATION##########################################################
-urlHermes = "https://www.myhermes.de/versenden/paketschein-erstellen/"
+"""urlHermes = "https://www.myhermes.de/versenden/paketschein-erstellen/"
 #Use browser Chrome
 browser = webdriver.Chrome()
 browser.get(urlHermes)
@@ -128,7 +135,7 @@ for i in range(0,len(communicators)):
         print(data[i][field])
         if data[i][field] != "":
             elementsCommunicator[i][field].send_keys(data[i][field])
-"""
+
 #Fixed pay by cash
 btnPayCash = browser.find_element(By.ID,"payment-cash")
 btnPayCash.click()
@@ -143,7 +150,5 @@ btnDownload = browser.find_element(By.XPATH,"/html/body/div[3]/section/div/div/d
 downloadLink = btnDownload.get_attribute("href")
 browser.get(downloadLink)
 time.sleep(3)
-"""
 
-time.sleep(30)
-browser.close()
+browser.close()"""

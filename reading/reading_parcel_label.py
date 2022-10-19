@@ -31,9 +31,9 @@ receiverInput = list()
 senderInput = list()
 input = [receiverInput, senderInput]
 
-elementsPackageSize = list()
-elementsReceiverData = list()
-elementsSenderData = list()
+elementsPackageSize = dict.fromkeys(packageSizes,"")
+elementsReceiverData = dict.fromkeys(receiverFields,"")
+elementsSenderData = dict.fromkeys(senderFields,"")
 elementsCommunicator = [elementsReceiverData, elementsSenderData]
 
 # Read input of user for parcel labe
@@ -43,7 +43,7 @@ fileContent = fp.readlines()
 for i in range(0, len(fileContent)):
     fileContent[i] = fileContent[i].replace("\n", "")
 
-parceSize = fileContent.pop(0)
+parceSize = fileContent.pop(0).upper()
 fileContent.pop(0)
 i = 0
 for value in fileContent:
@@ -52,22 +52,18 @@ for value in fileContent:
         continue
     if EOIPNUT in value:
         break
-    input[i].append(value)
+    input[i].append(value.rstrip(" "))
 
-print(input)
-print("----------------")
 
 for i in range(0, len(input)):
     for j in range(0, len(input[i])):
         match j:
             case 0:
                 if len(input[i][j].split(" ")) == 2:
-                    print("Name1")
                     print(input[i][j].split(" ")[1])
                     data[i][fields[i][j]] = input[i][j].split(" ")[0]
                     data[i][fields[i][j+1]] = input[i][j].split(" ")[1]
                 else:
-                    print("Name2")
                     data[i][fields[i][j+1]] = input[i][j]
             case 1:
                 if "strasse" in input[i][j]:
@@ -97,14 +93,13 @@ for com in data:
     for element in com.items():
         print(element)
 
-"""
 
-for i in range(0,len(userInputReading)):
+"""for i in range(0,len(userInputReading)):
     if i < int(len(userInputReading)/2):
         userInput[0].append(userInputReading[(i)])
     else:
         userInput[1].append(userInputReading[(i)])
-print(userInput)
+print(userInput)"""
 ###############################AUTOMATION##########################################################
 urlHermes = "https://www.myhermes.de/versenden/paketschein-erstellen/"
 #Use browser Chrome
@@ -115,23 +110,25 @@ time.sleep(1)
 btnCookiesDenie = browser.find_element(By.ID,"uc-btn-deny-banner")
 btnCookiesDenie.click()
 #Get elements of hermes fields
-for size in packageSizes:
-    elementsPackageSize.append(browser.find_element(By.ID,"parcelclass-"+size))
-for receiverInfo in receiverData:
-    elementsReceiverData.append(browser.find_element(By.ID,receiverInfo))
-for senderInfo in senderData:
-    elementsSenderData.append(browser.find_element(By.ID,senderInfo))
+
+elementsPackageSize[parceSize]= browser.find_element(By.ID,"parcelclass-"+parceSize)
+
+for field in receiverFields:
+    elementsReceiverData[field] = browser.find_element(By.ID,field)
+for field in senderFields:
+    elementsSenderData[field] = browser.find_element(By.ID,field)
 
 
 #Enter user input to its field
-for i in range(0,len(packageSizes)):
-    if packageSizes[i] == parcelSize.upper():
-        elementsPackageSize[i].click()
+elementsPackageSize[parceSize].click()
+
 
 for i in range(0,len(communicators)):
-    for i in range(0,MAX_COUNT_FIELDS):
-        elementsCommunicator[i][i].send_keys(userInput[i][i])
-
+    for field in fields[i]:
+        print(data[i][field])
+        if data[i][field] != "":
+            elementsCommunicator[i][field].send_keys(data[i][field])
+"""
 #Fixed pay by cash
 btnPayCash = browser.find_element(By.ID,"payment-cash")
 btnPayCash.click()
@@ -146,5 +143,7 @@ btnDownload = browser.find_element(By.XPATH,"/html/body/div[3]/section/div/div/d
 downloadLink = btnDownload.get_attribute("href")
 browser.get(downloadLink)
 time.sleep(3)
+"""
 
-browser.close()"""
+time.sleep(30)
+browser.close()

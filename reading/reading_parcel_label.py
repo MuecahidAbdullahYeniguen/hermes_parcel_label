@@ -11,28 +11,25 @@ userInputEntering = [list(), list()]
 userInputReading = list()
 userInput = [list(), list()]
 
-filledFields = {
-    "firstname": "",
-    "lastname": "",
-    "street": "",
-    "houseNumber": "",
-    "zipCode": "",
-    "city": "",
-    "email": "",
-    "phone": ""
-}
 
-fields = ["firstname", "lastname", "street",
-          "houseNumber", "zipCode", "city", "email", "phone"]
 communicators = ["receiver", "sender"]
 packageSizes = ["HP", "S", "M", "L", "XL", "XXL"]
-receiverData = ["receiverAddressFirstname", "receiverAddressLastname", "receiverAddressStreet",
-                "receiverAddressHouseNumber", "receiverAddressZipCode", "receiverAddressCity", "receiverEmail", "receiverPhone"]
-senderData = ["senderAddressFirstname", "senderAddressLastname", "senderAddressStreet",
-              "senderAddressHouseNumber", "senderAddressZipCode", "senderAddressCity", "senderEmail", "senderPhone"]
+receiverFields = ["receiverAddressFirstname", "receiverAddressLastname", "receiverAddressStreet",
+                  "receiverAddressHouseNumber", "receiverAddressZipCode", "receiverAddressCity", "receiverEmail", "receiverPhone"]
+senderFields = ["senderAddressFirstname", "senderAddressLastname", "senderAddressStreet",
+                "senderAddressHouseNumber", "senderAddressZipCode", "senderAddressCity", "senderEmail", "senderPhone"]
+receiverData = dict.fromkeys(receiverFields, "")
+senderData = dict.fromkeys(senderFields, "")
+data = [receiverData, senderData]
+fields = [receiverFields, senderFields]
+
 NOW_SENDER = "-"
 EOIPNUT = "#"
 
+
+receiverInput = list()
+senderInput = list()
+input = [receiverInput, senderInput]
 
 elementsPackageSize = list()
 elementsReceiverData = list()
@@ -42,71 +39,71 @@ elementsCommunicator = [elementsReceiverData, elementsSenderData]
 # Read input of user for parcel labe
 filepath = r'C:\Users\MJ\Desktop\python_automation\user_input.txt'
 fp = open(filepath, "r")
-input = fp.readlines()
+fileContent = fp.readlines()
+for i in range(0, len(fileContent)):
+    fileContent[i] = fileContent[i].replace("\n", "")
 
-for i in range(0, len(input)):
-    input[i] = input[i].replace("\n", "").replace(" ", "")
-    print(input[i])
+parceSize = fileContent.pop(0)
+fileContent.pop(0)
+i = 0
+for value in fileContent:
+    if NOW_SENDER in value:
+        i += 1
+        continue
+    if EOIPNUT in value:
+        break
+    input[i].append(value)
+
+print(input)
 print("----------------")
-parcelSize = input.pop(0)
-input.pop(0)
-
 
 for i in range(0, len(input)):
-    match i:
-        case 0:
-            if len(input[i].split(" ")) == 2:
-                print("NAME1")
-            else:
-                print("NAME2")
-        case 1:
-            if "strasse" or "straße" in input[i]:
-                print("STRASSE")
-        case 2:
-            if re.match(r"^[0-9]{1,2}$", input[i]):
-                print("HOUSENUMBER")
-        case 3:
-            if re.match(r"\d{5}", input[i]):
-                print("ZIPCODE")
-        case 4:
-            if re.match(r"^[A-Za-z]+$", input[i]):
-                print("STADDDTT")
-        case 5:
-            if re.match(r"[A-Za-z]+\@[A-Za-z]+\.[A-Za-z]+", input[i]):
-                print("EMIALL")
-            elif re.match(r"\d{12}", input[i]):
-                print("TELEFON")
-        case 6:
-            if re.match(r"\d{12}", input[i]):
-                print("TELEFON")
-            elif re.match(r"[A-Za-z]+\@[A-Za-z]+\.[A-Za-z]+", input[i]):
-                print("EMIALL")
+    for j in range(0, len(input[i])):
+        match j:
+            case 0:
+                if len(input[i][j].split(" ")) == 2:
+                    print("Name1")
+                    print(input[i][j].split(" ")[1])
+                    data[i][fields[i][j]] = input[i][j].split(" ")[0]
+                    data[i][fields[i][j+1]] = input[i][j].split(" ")[1]
+                else:
+                    print("Name2")
+                    data[i][fields[i][j+1]] = input[i][j]
+            case 1:
+                if "strasse" in input[i][j]:
+                    data[i][fields[i][j+1]] = input[i][j]
+            case 2:
+                if re.match(r"^[0-9]{1,2}$", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
+            case 3:
+                if re.match(r"\d{5}", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
+            case 4:
+                if re.match(r"^[A-Za-z]+$", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
+            case 5:
+                if re.match(r"[A-Za-z]+\@[A-Za-z]+\.[A-Za-z]+", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
+                elif re.match(r"\d{12}", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
+            case 6:
+                if re.match(r"\d{12}", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
+                elif re.match(r"[A-Za-z]+\@[A-Za-z]+\.[A-Za-z]+", input[i][j]):
+                    data[i][fields[i][j+1]] = input[i][j]
 
-    
 
+for com in data:
+    for element in com.items():
+        print(element)
 
 """
-parcelSize = fp.readline()
-fp.readline()
-name = fp.readline().replace("\n", "").split(" ")
-if len(name) == 2:
-    filledFields["firstname"] = name[0]
-    filledFields["lastname"] = name[1]
-else:
-    filledFields["lastname"] = name[0]
 
-filledFields["street"] = "".join([val for val in fp.readline() if val.isalpha()])
-filledFields["houseNumber"] = "".join([val for val in fp.readline() if val.isnumeric()])
-filledFields["zipCode"] = "".join([val for val in fp.readline() if val.isnumeric()])
-filledFields["city"] = "".join([val for val in fp.readline() if val.isalpha()])
-filledFields["email"] = fp.readline().rstrip("\n")
-filledFields["phone"] = "".join([val for val in fp.readline() if val.isnumeric()])
-
-for j in range(0,len(userInputReading)):
-    if j < int(len(userInputReading)/2):
-        userInput[0].append(userInputReading[(j)])
+for i in range(0,len(userInputReading)):
+    if i < int(len(userInputReading)/2):
+        userInput[0].append(userInputReading[(i)])
     else:
-        userInput[1].append(userInputReading[(j)])
+        userInput[1].append(userInputReading[(i)])
 print(userInput)
 ###############################AUTOMATION##########################################################
 urlHermes = "https://www.myhermes.de/versenden/paketschein-erstellen/"
@@ -132,8 +129,8 @@ for i in range(0,len(packageSizes)):
         elementsPackageSize[i].click()
 
 for i in range(0,len(communicators)):
-    for j in range(0,MAX_COUNT_FIELDS):
-        elementsCommunicator[i][j].send_keys(userInput[i][j])
+    for i in range(0,MAX_COUNT_FIELDS):
+        elementsCommunicator[i][i].send_keys(userInput[i][i])
 
 #Fixed pay by cash
 btnPayCash = browser.find_element(By.ID,"payment-cash")

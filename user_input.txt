@@ -1,6 +1,6 @@
 s
 
-vorname 
+hallo bay
 strasse
 21
 11111 
@@ -8,19 +8,11 @@ karlsruhe
 asss@sss.ss
 012345678911
 ----
-nachname
-aaddresse 
+vorname
+strasse
 2
 88888 
 karlsruhe
 a@s.de
 03448484
 ###
-
-0 vorname snachname
-1 aaddresse 
-2 3
-3 88888 
-4 karlsruhe
-5 a@s.de
-6 3448484

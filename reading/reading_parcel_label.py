@@ -38,6 +38,15 @@ elementsReceiverData = dict.fromkeys(receiverFields, "")
 elementsSenderData = dict.fromkeys(senderFields, "")
 elementsCommunicator = [elementsReceiverData, elementsSenderData]
 
+urlHermes = "https://www.myhermes.de/versenden/paketschein-erstellen/"
+#Use browser Chrome
+browser = webdriver.Chrome()
+browser.get(urlHermes)
+#Load pop up dialog
+time.sleep(1)
+btnCookiesDenie = browser.find_element(By.ID,"uc-btn-deny-banner")
+btnCookiesDenie.click()
+
 # Read input of user for parcel labe
 filepath = r'C:\Users\MJ\Desktop\python_automation\user_input.txt'
 fp = open(filepath, "r")
@@ -62,7 +71,6 @@ while amountCreatedPLabels != countParcelLabels:
             fileContent.remove(value)
             amountCreatedPLabels += 1
             break
-        print(i)
         input[i].append(value)
         fileContent.remove(value)
     print(input)
@@ -73,7 +81,6 @@ while amountCreatedPLabels != countParcelLabels:
             match j:
                 case 0:
                     if len(input[i][j].split(" ")) == 2:
-                        print(input[i][j].split(" ")[1])
                         data[i][fields[i][j]] = input[i][j].split(" ")[0]
                         data[i][fields[i][j+1]] = input[i][j].split(" ")[1]
                     else:
@@ -105,14 +112,6 @@ while amountCreatedPLabels != countParcelLabels:
 
 
     ###############################AUTOMATION##########################################################
-    urlHermes = "https://www.myhermes.de/versenden/paketschein-erstellen/"
-    #Use browser Chrome
-    browser = webdriver.Chrome()
-    browser.get(urlHermes)
-    #Load pop up dialog
-    time.sleep(1)
-    btnCookiesDenie = browser.find_element(By.ID,"uc-btn-deny-banner")
-    btnCookiesDenie.click()
     #Get elements of hermes fields
 
     elementsPackageSize[parceSize]= browser.find_element(By.ID,"parcelclass-"+parceSize)
@@ -129,7 +128,6 @@ while amountCreatedPLabels != countParcelLabels:
 
     for i in range(0,len(communicators)):
         for field in fields[i]:
-            print(data[i][field])
             if data[i][field] != "":
                 elementsCommunicator[i][field].send_keys(data[i][field])
 
@@ -148,7 +146,11 @@ while amountCreatedPLabels != countParcelLabels:
     browser.get(downloadLink)
     time.sleep(3)
 
-    #browser.close()
+    btnNewOrder = browser.find_element(By.XPATH,"/html/body/div[3]/section/div/div/div[1]/div/div/div/div[7]/div/div[1]/a")
+    browser.get(btnNewOrder.get_attribute("href"))
+    time.sleep(3)
 
     input[0].clear()
     input[1].clear()
+
+browser.close()

@@ -86,7 +86,6 @@ while amountCreatedPLabels != countParcelLabels:
                     else:
                         data[i][fields[i][j+1]] = input[i][j]
                 case 1:
-                    if "strasse" in input[i][j]:
                         data[i][fields[i][j+1]] = input[i][j]
                 case 2:
                     if re.match(r"^[0-9]{1,2}$", input[i][j]):

@@ -36,10 +36,10 @@ elementsCommunicator = [elementsReceiverData, elementsSenderData]
 
 # Get input of user for parcel label
 
-exit = True
+exit = False
 
 
-while  exit:
+while not exit:
     print(exit)
     print("Package: ")
     parcelSize = input("Enter parcel size: ").upper()
@@ -98,7 +98,7 @@ while  exit:
     btnNewOrder = browser.find_element(By.XPATH,"/html/body/div[3]/section/div/div/div[1]/div/div/div/div[7]/div/div[1]/a")
     browser.get(btnNewOrder.get_attribute("href"))
     time.sleep(3)
-    browser.close()
     data[0].clear()
     data[1].clear()
-    exit = False if "n" ==input("Exit y/n ?") else True
+    exit = True if "y" ==input("Exit y/n ?") else False
+print("FINISH")

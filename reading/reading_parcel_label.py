@@ -48,7 +48,7 @@ btnCookiesDenie = browser.find_element(By.ID,"uc-btn-deny-banner")
 btnCookiesDenie.click()
 
 # Read input of user for parcel labe
-filepath = r'C:\Users\MJ\Desktop\python_automation\user_input.txt'
+filepath = r'...\user_input.txt'
 fp = open(filepath, "r")
 fileContent = [x.rstrip("\n").rstrip(" ") for x in fp.readlines()]
 

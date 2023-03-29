@@ -28,4 +28,3 @@ Telephone number
 The block from the beginning to the # character (use at least once for separation) is a parcel label with recipient and sender.
 This block can follow several times in succession. Finally, a dot . follows at least once as the end of the file.
 
-Translated with www.DeepL.com/Translator (free version)
